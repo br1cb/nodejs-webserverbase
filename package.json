@@ -1,0 +1,35 @@
+{
+  "name": "webserverbase",
+  "version": "1.0.0",
+  "description": "base for web server in nodejs",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node dist/index.js",
+    "start:tsc": "tsc-watch --onSuccess \"npm run start\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/br1cb/webserverbase.git"
+  },
+  "keywords": [
+    "server",
+    "nodejs",
+    "base",
+    "template"
+  ],
+  "author": "Bruno César Barletta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/br1cb/webserverbase/issues"
+  },
+  "homepage": "https://github.com/br1cb/webserverbase#readme",
+  "devDependencies": {
+    "@types/node": "^24.2.1",
+    "tsc-watch": "^7.1.1",
+    "typescript": "^5.9.2"
+  }
+}
