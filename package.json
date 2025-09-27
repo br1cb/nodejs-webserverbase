@@ -9,7 +9,14 @@
     "build:watch": "tsc --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/index.js",
-    "start:tsc": "tsc-watch --onSuccess \"npm run start\""
+    "start:tsc": "tsc-watch --onSuccess \"npm run start\"",
+    
+
+    "docker:start": "docker-compose up -d",
+    "docker:stop": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "docker:reset": "docker-compose down -v",
+    "docker:rebuild": "docker-compose down -v && docker-compose up -d --build"
   },
   "repository": {
     "type": "git",
