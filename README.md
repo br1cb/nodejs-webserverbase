@@ -1,6 +1,6 @@
 # WebServerBase
 
-Base para un servidor Node.js backend profesional utilizando **TypeScript**, **MariaDB** y configuración lista para **Docker**. Este proyecto sirve como plantilla inicial para crear APIs RESTful escalables.
+Base para un servidor vanilla Node.js backend utilizando **TypeScript**, **MariaDB** y configuración lista para **Docker**.
 
 ---
 
