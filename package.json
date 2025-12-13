@@ -10,8 +10,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/index.js",
     "start:tsc": "tsc-watch --onSuccess \"npm run start\"",
-    
-
     "docker:start": "docker-compose up -d",
     "docker:stop": "docker-compose down",
     "docker:logs": "docker-compose logs -f",
@@ -36,7 +34,11 @@
   "homepage": "https://github.com/br1cb/webserverbase#readme",
   "devDependencies": {
     "@types/node": "^24.2.1",
+    "dotenv": "^17.2.3",
     "tsc-watch": "^7.1.1",
     "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "mariadb": "^3.4.5"
   }
 }

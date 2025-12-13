@@ -1,39 +1,120 @@
 # WebServerBase
 
-Base para un servidor Node.js con TypeScript y soporte para levantar contenedores Docker.
+Base para un servidor Node.js backend profesional utilizando **TypeScript**, **MariaDB** y configuración lista para **Docker**. Este proyecto sirve como plantilla inicial para crear APIs RESTful escalables.
 
 ---
 
-## Scripts de NPM
+## 📋 Requisitos Previos
 
-### Desarrollo y build
+Asegúrate de tener instalado lo siguiente en tu sistema:
 
-| Script | Descripción |
-|--------|-------------|
-| `npm run build` | Compila el proyecto TypeScript a JavaScript en la carpeta `dist/`. |
-| `npm run build:watch` | Compila el proyecto en modo watch, recompilando automáticamente cuando hay cambios. |
-| `npm run test` | Script de prueba por defecto (sin tests implementados). |
-| `npm run start` | Ejecuta el servidor Node.js desde la carpeta `dist/`. |
-| `npm run start:tsc` | Compila el proyecto y ejecuta el servidor automáticamente cuando la compilación es exitosa (usa `tsc-watch`). |
+- **Node.js** (v18 o superior recomendado)
+- **npm** (gestor de paquetes)
+- **Docker** y **Docker Compose** (para la base de datos)
+- **Git**
+
+## 🚀 Instalación y Configuración
+
+Sigue estos pasos para levantar el entorno de desarrollo:
+
+### 1. Clonar el repositorio
+
+```bash
+git clone https://github.com/br1cb/webserverbase.git
+cd webserverbase
+```
+
+### 2. Instalar dependencias
+
+```bash
+npm install
+```
+
+### 3. Configuración de Variables de Entorno
+
+El proyecto requiere variables de entorno para funcionar. Utiliza el archivo plantilla `.env.template` para crear tu configuración local:
+
+```bash
+cp .env.template .env
+```
+
+Edita el archivo `.env` según sea necesario. La configuración por defecto está lista para funcionar con el setup de Docker incluido:
+
+```env
+DB_USER=root
+DB_PASSWORD=1793
+DB_PORT=3306
+DB_URL=localhost
+DB_NAME=baseapp
+```
 
 ---
 
-### Docker
+## 🛠 Flow de Desarrollo con Docker
 
-Se asume que hay un archivo `docker-compose.yml` en la raíz del proyecto.  
+Este proyecto incluye un entorno dockerizado para la base de datos MariaDB. No necesitas instalar MariaDB localmente.
 
-| Script | Descripción |
-|--------|-------------|
-| `npm run docker:start` | Levanta los contenedores definidos en `docker-compose.yml` en segundo plano. |
-| `npm run docker:stop` | Baja los contenedores pero **mantiene los volúmenes** (los datos de la base de datos no se pierden). |
-| `npm run docker:logs` | Muestra los logs de los contenedores en tiempo real. |
-| `npm run docker:reset` | Baja los contenedores y **borra los volúmenes**, dejando la base de datos limpia. ⚠️ Todos los datos se eliminan. |
-| `npm run docker:rebuild` | Baja los contenedores, borra los volúmenes y vuelve a levantar los servicios desde cero, reconstruyendo imágenes si es necesario. Ideal para reiniciar el entorno limpio. |
+1. **Levantar la base de datos:**
+   ```bash
+   npm run docker:start
+   ```
+
+2. **Iniciar el servidor en modo desarrollo:**
+   Este comando compilará el TypeScript y reiniciará el servidor ante cambios (usando `tsc-watch`).
+   ```bash
+   npm run start:tsc
+   ```
 
 ---
 
-## Notas
+## 📜 Scripts Disponibles
 
-- Docker Compose debe estar instalado a nivel del sistema.
-- `docker-compose.yml` define los servicios, puertos y volúmenes para MariaDB u otros contenedores que quieras agregar.
-- Usar `docker:reset` o `docker:rebuild` eliminará todos los datos persistidos en los volúmenes de MariaDB.
+### Desarrollo
+
+| Comando | Descripción |
+|---------|-------------|
+| `npm run start:tsc` | **Recomendado**. Compila y corre el servidor, reiniciando al detectar cambios. |
+| `npm run build` | Compila el código TypeScript a JavaScript en la carpeta `dist/`. |
+| `npm run build:watch` | Solo compila en modo watch (útil si corres el servidor por otro lado). |
+| `npm run start` | Ejecuta el código JavaScript compilado en `dist/index.js`. |
+
+### Docker (Base de Datos)
+
+| Comando | Descripción |
+|---------|-------------|
+| `npm run docker:start` | Levanta los contenedores en segundo plano. |
+| `npm run docker:stop` | Detiene los contenedores pero **mantiene los datos**. |
+| `npm run docker:logs` | Muestra los logs de la base de datos en tiempo real. |
+| `npm run docker:reset` | Destruye contenedores y **borra todos los datos** (Volúmenes). |
+| `npm run docker:rebuild` | Reinicio total: borra datos, reconstruye imágenes y levanta todo de cero. |
+
+---
+
+## 📡 API Endpoints
+
+Las rutas están definidas en `src/router.ts`.
+
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| **GET** | `/books` | Obtiene la lista de libros (implementado con conexión a DB). |
+| **POST** | `/books` | Crea un nuevo libro (requiere body JSON). |
+| **GET** | `/authors` | Devuelve una lista mock de autores (ejemplo estático). |
+| **GET**| `/users` | Ruta de prueba para servicios de usuarios (Async test). |
+
+---
+
+## 📂 Estructura del Proyecto
+
+```text
+src/
+├── config/       # Configuraciones (DB, env vars)
+├── controllers/  # Lógica de manejo de peticiones (req/res)
+├── interfaces/   # Definiciones de tipos TypeScript
+├── middlewares/  # Middlewares perzonalizados
+├── models/       # Queries y modelos de datos
+├── routes/       # Definición de rutas específicas
+├── services/     # Lógica de negocio
+├── utils/        # Utilidades compartidas
+├── index.ts      # Punto de entrada del servidor
+└── router.ts     # Enrutador principal
+```
