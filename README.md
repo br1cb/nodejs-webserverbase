@@ -1,6 +1,6 @@
 # WebServerBase
 
-Base para un servidor vanilla Node.js backend utilizando **TypeScript**, **MariaDB** y configuración lista para **Docker**.
+Base para un servidor web vanilla Node.js backend utilizando **TypeScript**, **MariaDB** y configuración lista para **Docker**.
 
 ---
 
