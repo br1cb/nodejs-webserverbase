@@ -111,7 +111,8 @@ src/
 ├── controllers/  # Lógica de manejo de peticiones (req/res)
 ├── interfaces/   # Definiciones de tipos TypeScript
 ├── middlewares/  # Middlewares perzonalizados
-├── models/       # Queries y modelos de datos
+├── models/       # Definiciones de tipos/entidades
+├── repositories/ # Capa de Acceso a Datos (SQL)
 ├── routes/       # Definición de rutas específicas
 ├── services/     # Lógica de negocio
 ├── utils/        # Utilidades compartidas
