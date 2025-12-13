@@ -119,3 +119,22 @@ src/
 ├── index.ts      # Punto de entrada del servidor
 └── router.ts     # Enrutador principal
 ```
+
+---
+
+## ✅ TODO List
+
+Tareas pendientes identificadas en el código:
+
+### Router
+- [ ] Implementar una interface en `enrutar` que pueda recibir 'extras' (`src/router.ts`).
+- [ ] Mejorar el manejo de errores en promesas (reemplazar logs de error genéricos) (`src/router.ts`).
+
+### Users
+- [ ] Terminar la implementación del servicio de usuarios, actualmente es un prototipo (`src/services/users.ts`).
+
+### Books
+- [ ] Depurar `src/routes/books.route.ts` para verificar el contenido de `params`.
+- [ ] Testear y mover la lógica de negocio de las rutas al controlador (`src/routes/books.route.ts`).
+- [ ] Implementar soporte para múltiples `search params`.
+- [ ] Implementar endpoint para obtener libro por ID (`GET /books/:id`).
