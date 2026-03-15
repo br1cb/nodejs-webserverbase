@@ -1,68 +1,43 @@
 import type { IncomingMessage, ServerResponse } from "http";
-import { getPathname, getQueryParams } from "../utils/routes-utils.js";
-import type { RouteExtras } from "../interfaces/routes-interfaces.js";
-import { allBooks, updateBookById } from "../services/books.service.js";
+import type { RouteExtras, RouteHandler } from "../interfaces/routes-interfaces.js";
 import type { Book } from "../models/book.model.js";
-
-//TODO pasar logica a controladores e implementar metodos faltantes (put, delete, post)
+import { getBooks, getBookById, createBook, updateBook, deleteBook } from "../controllers/books.controller.js";
 
 /** router de /books */
-export function enrutarBooks(req: IncomingMessage, res: ServerResponse, extras: RouteExtras<Book>) {
+export const enrutarBooks: RouteHandler<Book> = (req, res, extras) => {
+  // Construir objeto Request compatible con el controlador
+  const controllerReq = Object.assign(req, {
+    body: extras?.parsedBody as any
+  });
 
   const method = req.method;
 
-  // TODO depurar para ver que hay en params
-  const params = getQueryParams(req);
-
-  res.setHeader("Content-Type", "application/json");
-
-  if (method === "GET") {
-
-    //TODO testear y pasar logica al control
-
-    if (params.size === 0) {
-      allBooks()
-        .then((result) => {
-          res.statusCode = 200;
-          res.end(JSON.stringify({ 'result': result }));
-        })
-        .catch((err) => {
-          res.statusCode = 500;
-          res.end(JSON.stringify({ error: { message: 'Internal Server Error' } }));
-        });
-
-      return;
-    }
-
-    // si hay search param por ejemplo 'id' manejarlo 
-    // para devolver el libro por ese id.
-    // TODO.. mas de un search param
-
-    debugger;// ver que hay en params.
-    const id = params.get('id');
-
-    // TODO book by id
-
-  }
-  else if (method === "POST") {
-
-    // TODO testear y pasar logica al control
-
-    const data = extras?.parsedBody;
-    if (data == undefined) {
-      res.statusCode = 400;
-      res.end(JSON.stringify({ error: { text: "no se recibio id" } }));
-      return;
-    }
-
-    updateBookById(data.id, data)
-      .then((result) => {
-        res.statusCode = 200;
-        res.end(JSON.stringify({ 'result': result }));
-      })
-      .catch(err => {
-        res.statusCode = 404;
-        res.end(JSON.stringify({ error: { message: 'libro no encontrado' } }));
-      });
+  switch (method) {
+    case 'GET':
+      // Si hay un ID en la URL (path) o en query params
+      // En la implementación actual, parseId mira req.url (path)
+      // Necesitamos decidir cómo manejar /books/:id vs /books?id=
+      
+      // Simplificado: si la URL termina en número, buscar por ID
+      const urlParts = req.url?.split('/') ?? [];
+      if (urlParts.length > 2 && !isNaN(Number(urlParts[2]))) {
+        getBookById(controllerReq, res);
+      } else {
+        getBooks(controllerReq, res);
+      }
+      break;
+    case 'POST':
+      createBook(controllerReq, res);
+      break;
+    case 'PUT':
+      updateBook(controllerReq, res);
+      break;
+    case 'DELETE':
+      deleteBook(controllerReq, res);
+      break;
+    default:
+      res.statusCode = 405;
+      res.end(JSON.stringify({ error: 'Method Not Allowed' }));
+      break;
   }
 }

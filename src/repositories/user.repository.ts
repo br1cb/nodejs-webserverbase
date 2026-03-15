@@ -35,6 +35,67 @@ class UserRepository {
       if (conn) conn.end();
     }
   }
+
+  async getById(id: number): Promise<User | null> {
+    let conn: PoolConnection | null = null;
+    try {
+      conn = await pool.getConnection();
+      const res = await conn.query(`SELECT * FROM ${TABLE_NAME} WHERE id = ?`, [id]);
+      return res[0] || null;
+    } catch (err: any) {
+      console.error('Error getting user by id:', err);
+      throw err;
+    } finally {
+      if (conn) conn.end();
+    }
+  }
+
+  async create(user: Omit<User, 'id'>): Promise<number> {
+    let conn: PoolConnection | null = null;
+    try {
+      conn = await pool.getConnection();
+      const res = await conn.query(
+        `INSERT INTO ${TABLE_NAME} (nombre, apellido, dni) VALUES (?, ?, ?)`,
+        [user.nombre, user.apellido, user.dni]
+      );
+      return res.insertId;
+    } catch (err: any) {
+      console.error('Error creating user:', err);
+      throw err;
+    } finally {
+      if (conn) conn.end();
+    }
+  }
+
+  async update(id: number, data: Partial<Omit<User, 'id'>>): Promise<boolean> {
+    let conn: PoolConnection | null = null;
+    try {
+      conn = await pool.getConnection();
+      const fields = Object.keys(data).map(key => `${key} = ?`).join(', ');
+      const values = [...Object.values(data), id];
+      const res = await conn.query(`UPDATE ${TABLE_NAME} SET ${fields} WHERE id = ?`, values);
+      return res.affectedRows > 0;
+    } catch (err: any) {
+      console.error('Error updating user:', err);
+      throw err;
+    } finally {
+      if (conn) conn.end();
+    }
+  }
+
+  async delete(id: number): Promise<boolean> {
+    let conn: PoolConnection | null = null;
+    try {
+      conn = await pool.getConnection();
+      const res = await conn.query(`DELETE FROM ${TABLE_NAME} WHERE id = ?`, [id]);
+      return res.affectedRows > 0;
+    } catch (err: any) {
+      console.error('Error deleting user:', err);
+      throw err;
+    } finally {
+      if (conn) conn.end();
+    }
+  }
 }
 
 export default new UserRepository();

@@ -1,6 +1,25 @@
 import bookRepository from '../repositories/book.repository.js';
 import type { Book } from '../models/book.model.js';
 
+export const bookService = {
+  allBooks: async (): Promise<Book[]> => {
+    return await bookRepository.getAll();
+  },
+  addBook: async (title: string, author: string): Promise<number> => {
+    return await bookRepository.create(title, author);
+  },
+  updateBookById: async (id: number, data: { title?: string; author?: string }) => {
+    return await bookRepository.update(id, data);
+  },
+  deleteBookById: async (id: number) => {
+    return await bookRepository.delete(id);
+  },
+  getBookById: async (id: number): Promise<Book | null> => {
+    return await bookRepository.getById(id);
+  }
+};
+
+
 /**
  * Obtiene todos los libros.
  */

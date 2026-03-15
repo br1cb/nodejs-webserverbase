@@ -15,6 +15,21 @@ class BookRepository {
     `);
   }
 
+  async getById(id: number): Promise<Book | null> {
+    let conn: PoolConnection | null = null;
+    try {
+      conn = await pool.getConnection();
+      await this.ensureTableExists(conn);
+      const rows = await conn.query(`SELECT * FROM ${TABLE_NAME} WHERE id = ?`, [id]);
+      return rows.length > 0 ? rows[0] : null;
+    } catch (err: any) {
+      console.error('❌ Error al obtener libro por ID:', err.message || err);
+      throw err;
+    } finally {
+      if (conn) conn.end();
+    }
+  }
+
   async getAll(): Promise<Book[]> {
     let conn: PoolConnection | null = null;
     try {

@@ -6,12 +6,10 @@ import { enrutarBooks } from './routes/books.route.js';
 
 // solo de prueba borrar mas adelante
 import { allUsers } from './services/users.js';
-import { error } from 'node:console';
 import { getPathname } from './utils/routes-utils.js';
-import type { RouteExtras } from './interfaces/routes-interfaces.js';
+import type { RouteExtras, RouteHandler } from './interfaces/routes-interfaces.js';
 
-// TODO: Hacer que enrutar implemente una interface que pueda recibir 'extras'
-export function enrutar(req: IncomingMessage, res: ServerResponse, extras: RouteExtras<any> = null) {
+export const enrutar: RouteHandler = (req, res, extras = null) => {
   const method = req.method ?? 'GET';
   /** expample url: "/authors" */
   const url = req.url ?? '';
@@ -34,14 +32,19 @@ export function enrutar(req: IncomingMessage, res: ServerResponse, extras: Route
         res.end(authors)
       break;
     case 'users':
-      const users = new Promise(async (resolve, reject) => {
-        const users = await allUsers();
-        resolve(users);
-      }).then(value => {
-        console.log("EXCHITO!!");
-      })
-      .catch((err) => console.log("TODO MAL"))
-      .finally(() => res.end());
+      allUsers()
+        .then(users => {
+          const usersData = Array.isArray(users) ? users : [users];
+          res.statusCode = 200;
+          res.setHeader("Content-Type", "application/json");
+          res.end(JSON.stringify(usersData));
+        })
+        .catch(err => {
+          console.error('Error retrieving users:', err);
+          res.statusCode = 500;
+          res.setHeader("Content-Type", "application/json");
+          res.end(JSON.stringify({ error: 'Internal server error' }));
+        });
       break;
     default: 
         res.statusCode = 404; 
