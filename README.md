@@ -77,6 +77,7 @@ Este proyecto incluye un entorno dockerizado para la base de datos MariaDB. No n
 | `npm run build` | Compila el código TypeScript a JavaScript en la carpeta `dist/`. |
 | `npm run build:watch` | Solo compila en modo watch (útil si corres el servidor por otro lado). |
 | `npm run start` | Ejecuta el código JavaScript compilado en `dist/index.js`. |
+| `npm test` | Ejecuta los tests unitarios con mocks usando `node:test`. |
 
 ### Docker (Base de Datos)
 
@@ -97,7 +98,10 @@ Las rutas están definidas en `src/router.ts`.
 | Método | Ruta | Descripción |
 |--------|------|-------------|
 | **GET** | `/books` | Obtiene la lista de libros (implementado con conexión a DB). |
+| **GET** | `/books/:id` | Obtiene un libro específico por su ID. |
 | **POST** | `/books` | Crea un nuevo libro (requiere body JSON). |
+| **PUT** | `/books/:id` | Actualiza un libro específico por su ID. |
+| **DELETE** | `/books/:id` | Elimina un libro específico por su ID. |
 | **GET** | `/authors` | Devuelve una lista mock de autores (ejemplo estático). |
 | **GET**| `/users` | Ruta de prueba para servicios de usuarios (Async test). |
 
@@ -123,18 +127,19 @@ src/
 ---
 
 ## ✅ TODO List
-
+ 
 Tareas pendientes identificadas en el código:
 
 ### Router
-- [ ] Implementar una interface en `enrutar` que pueda recibir 'extras' (`src/router.ts`).
-- [ ] Mejorar el manejo de errores en promesas (reemplazar logs de error genéricos) (`src/router.ts`).
+- [x] Implementar una interface en `enrutar` que pueda recibir 'extras' (`src/router.ts`).
+- [x] Mejorar el manejo de errores en promesas (`src/router.ts`).
 
 ### Users
-- [ ] Terminar la implementación del servicio de usuarios, actualmente es un prototipo (`src/services/users.ts`).
+- [x] Terminar la implementación del servicio de usuarios (`src/services/users.ts`).
 
 ### Books
-- [ ] Depurar `src/routes/books.route.ts` para verificar el contenido de `params`.
-- [ ] Testear y mover la lógica de negocio de las rutas al controlador (`src/routes/books.route.ts`).
+- [x] Depurar `src/routes/books.route.ts` para verificar el contenido de `params`.
+- [x] Testear y mover la lógica de negocio de las rutas al controlador (`src/routes/books.route.ts`).
 - [ ] Implementar soporte para múltiples `search params`.
-- [ ] Implementar endpoint para obtener libro por ID (`GET /books/:id`).
+- [x] Implementar endpoint para obtener libro por ID (`GET /books/:id`).
+
