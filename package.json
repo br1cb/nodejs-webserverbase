@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test dist/tests/**/*.test.js",
     "start": "node dist/index.js",
     "start:tsc": "tsc-watch --onSuccess \"npm run start\"",
     "docker:start": "docker-compose up -d",
